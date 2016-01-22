@@ -1,36 +1,29 @@
-/*int getHeight(Node* root){
+int getHeightNoNRecursive(Node* root){
   //Write your code here
     if(root == NULL) return 0;
     Node stack[30000];
-    int size = 1, height = 1, maxHeight = 1;
+    int stackHeight[30000];
+    int size = 1, maxHeight = 1;
     stack[0] = *root;
+    stackHeight[0] = 1;
     while(size > 0) {
-        if(stack[size - 1].left == NULL) {
-            if(stack[size - 1].right == NULL) {
-                maxHeight = height > maxHeight ? height : maxHeight;
-                while(stack[size - 1].right == NULL && size > 0) {
-                    size--;
-                    height--;
-                }
-                if(size > 0 && stack[size - 1].right != NULL) {
-                    stack[size - 1] = *stack[size - 1].right;
-                    height++;
-                }
-                //printf("%d\n", height);
-            }
-            else {
-                stack[size - 1] = *stack[size - 1].right;
-                height++;
-            }
+        Node curr = stack[--size];
+        int currHeight = stackHeight[size];
+        //printf("%d\n", curr.data);
+        if(curr.right != NULL) {
+            stack[size++] = *curr.right;
+            stackHeight[size - 1] = currHeight + 1;
         }
-        else {
-            stack[size] = *stack[size - 1].left;
-            size++;
-            height++;
+        if(curr.left != NULL) {
+            stack[size++] = *curr.left;
+            stackHeight[size - 1] = currHeight + 1;
+        } 
+        if(curr.left == NULL && curr.right == NULL && currHeight > maxHeight) {
+            maxHeight = currHeight;
         }
     }
     return maxHeight;
-}*/
+}
 
 int getHeight(Node *root) {
     if(root == NULL) 
